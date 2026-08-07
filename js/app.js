@@ -74,7 +74,7 @@ transform: "translateY(10px) scale(0.985)"
       }
     ],
     {
-      duration: 210,
+      duration: 280,
       delay: index * 20,
       easing: "cubic-bezier(0.22,1,0.36,1)",
       fill: "forwards"
@@ -438,7 +438,7 @@ function closeModal() {
         }
       ],
       {
-        duration: 180,
+        duration: 240,
         delay: index * 15,
         easing: "ease-in",
         fill: "forwards"

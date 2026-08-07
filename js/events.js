@@ -1,6 +1,7 @@
 import { getAllEvents, deleteEvent } from "./storage.js";
 
 const DAY_NAMES = ["DOM", "LUN", "MAR", "MER", "GIO", "VEN", "SAB"];
+let expandedCard = null;
 
 function formatBadgeDate(dateStr) {
   const dateObj = new Date(dateStr + "T00:00:00");
@@ -30,11 +31,28 @@ function createEventCard(event, onRefresh) {
     </div>
   `;
 
-  // Toggle espansione card al click
-  card.addEventListener("click", (e) => {
-    if (e.target.classList.contains("btn-inline-delete")) return;
-    card.classList.toggle("expanded");
-  });
+  // Espansione card
+card.addEventListener("click", (e) => {
+  if (e.target.classList.contains("btn-inline-delete")) return;
+
+  e.stopPropagation();
+
+  // Se era aperta la richiudiamo
+  if (expandedCard === card) {
+    card.classList.remove("expanded");
+    expandedCard = null;
+    return;
+  }
+
+  // Chiude l'eventuale card già aperta
+  if (expandedCard) {
+    expandedCard.classList.remove("expanded");
+  }
+
+  // Apre quella selezionata
+  card.classList.add("expanded");
+  expandedCard = card;
+});
 
   // Azione eliminazione diretta
   const deleteBtn = card.querySelector(".btn-inline-delete");
@@ -138,3 +156,10 @@ export async function renderUpcomingEvents(containerEl, onRefresh, visibleDate =
     console.error("Errore nel rendering dei prossimi impegni:", err);
   }
 }
+// Chiude la card aperta quando si tocca fuori
+document.addEventListener("click", () => {
+  if (expandedCard) {
+    expandedCard.classList.remove("expanded");
+    expandedCard = null;
+  }
+});
