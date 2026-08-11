@@ -163,35 +163,40 @@ export function initializeCalendar(onDayClick, onMonthChange) {
 
   newPrevBtn.addEventListener("click", () => updateCalendar(-1, true));
   newNextBtn.addEventListener("click", () => updateCalendar(1, true));
-    // Swipe tra i mesi
-  let touchStartX = 0;
-  let touchEndX = 0;
+    // Swipe tra i mesi su tutto lo schermo
+let touchStartX = 0;
+let touchEndX = 0;
+let isSwiping = false;
 
-  let isSwiping = false;
+document.addEventListener("touchstart", (event) => {
+  // Se stiamo interagendo con il popup, non cambiamo mese
+  if (event.target.closest(".modal")) return;
 
-grid.addEventListener("touchstart", (event) => {
   isSwiping = false;
   touchStartX = event.changedTouches[0].screenX;
 });
 
-  grid.addEventListener("touchend", (event) => {
-    touchEndX = event.changedTouches[0].screenX;
+document.addEventListener("touchend", (event) => {
+  // Se il tocco è partito dal popup, ignoriamo lo swipe
+  if (event.target.closest(".modal")) return;
 
-    const distance = touchEndX - touchStartX;
+  touchEndX = event.changedTouches[0].screenX;
 
-// Evita cambi mese per movimenti troppo piccoli
-if (Math.abs(distance) < 60) return;
+  const distance = touchEndX - touchStartX;
 
-isSwiping = true;
+  // Evita cambi mese per movimenti troppo piccoli
+  if (Math.abs(distance) < 60) return;
 
-    if (distance < 0) {
-      // Swipe verso sinistra → mese successivo
-      updateCalendar(1, true);
-    } else {
-      // Swipe verso destra → mese precedente
-      updateCalendar(-1, true);
-    }
-  });
+  isSwiping = true;
+
+  if (distance < 0) {
+    // Swipe verso sinistra → mese successivo
+    updateCalendar(1, true);
+  } else {
+    // Swipe verso destra → mese precedente
+    updateCalendar(-1, true);
+  }
+});
 
   // Disegno immediato all'avvio
   renderCalendar({ grid, title, visibleDate: currentVisibleDate, today, animate: false, onDayClick });
