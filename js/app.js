@@ -6,7 +6,6 @@ const modal = document.getElementById("eventModal");
 const modalCardsContainer = document.getElementById("modalCardsContainer");
 const modalBackdrop = document.getElementById("modalBackdrop");
 
-
 let currentDayEvents = [];
 let currentSelectedDate = "";
 let isAddingNewEvent = false;
@@ -46,8 +45,6 @@ async function onDayClick(dateStr, eventsForDay, dayElement) {
     const dayCenterHorizontal = (dayRect.left + dayRect.width / 2) - calendarRect.left;
     modalCardsContainer.style.setProperty('--arrow-left', `${dayCenterHorizontal}px`);
   }
-
-  modalBackdrop.style.pointerEvents = "auto"; // <-- RIGA AGGIUNTA QUI
 
   modalBackdrop.animate(
   [
@@ -464,7 +461,6 @@ function closeModal() {
 
   setTimeout(() => {
     modal.classList.remove("is-open");
-    modalBackdrop.style.pointerEvents = "none"; // <-- RIGA AGGIUNTA QUI
     isAddingNewEvent = false;
   }, 180);
 
